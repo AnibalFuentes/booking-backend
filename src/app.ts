@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 import { bookingRouter } from "./routes/booking.routes";
 import { servicesRouter } from "./routes/services.routes";
 import { reviewsRouter } from "./routes/reviews.routes";
@@ -9,6 +10,9 @@ const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
+
+// 👇 Logger HTTP
+app.use(morgan("dev"));
 
 // Health check
 app.get("/api/health", (req, res) => {
@@ -24,5 +28,5 @@ app.use("/api/services", servicesRouter);
 app.use("/api/reviews", reviewsRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
