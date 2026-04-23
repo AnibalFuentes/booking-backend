@@ -18,8 +18,8 @@ export const getBooking = (req: Request, res: Response) => {
   }
 };
 
-export const createBooking = (req: Request, res: Response) => {
-  const newBooking = bookingService.createBooking(req.body);
+export const createBooking = async (req: Request, res: Response) => {
+  const newBooking = await bookingService.createBooking(req.body);
   res.status(201).json(newBooking);
 };
 

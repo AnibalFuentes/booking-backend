@@ -1,4 +1,5 @@
 import { Booking } from '../types';
+import { invokeLambda } from './lambda.service';
 
 export class BookingService {
   private bookings: Booking[] = [];
@@ -11,13 +12,24 @@ export class BookingService {
     return this.bookings.find(b => b.id === id);
   }
 
-  createBooking(booking: Omit<Booking, 'id' | 'status'>): Booking {
+  async createBooking(booking: Omit<Booking, 'id' | 'status'>): Promise<Booking> {
     const newBooking: Booking = {
       ...booking,
       id: (this.bookings.length + 1).toString(),
       status: 'pending'
     };
     this.bookings.push(newBooking);
+
+    // 👇 Invocar Lambda async
+    await invokeLambda({
+      bookingId: newBooking.id,
+      clientName: newBooking.clientName,
+      clientEmail: newBooking.clientEmail,
+      serviceId: newBooking.serviceId,
+      date: newBooking.date,
+      time: newBooking.time,
+    });
+
     return newBooking;
   }
 
